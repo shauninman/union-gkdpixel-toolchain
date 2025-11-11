@@ -11,13 +11,13 @@ NORM=$(shell tput sgr0)
 .build: Dockerfile
 	$(info $(BOLD)Building $(TOOLCHAIN_NAME)...$(NORM))
 	mkdir -p ./workspace
-	docker build -t $(TOOLCHAIN_NAME) .
+	docker build --platform linux/386 -t $(TOOLCHAIN_NAME) .
 	touch .build
 
 ifeq ($(CONTAINER_NAME),)
 shell: .build
 	$(info $(BOLD)Starting $(TOOLCHAIN_NAME)...$(NORM))
-	docker run -it --rm -v "$(WORKSPACE_DIR)":/root/workspace $(TOOLCHAIN_NAME) /bin/bash
+	docker run --platform linux/386 -it --rm -v "$(WORKSPACE_DIR)":/root/workspace $(TOOLCHAIN_NAME) /bin/bash
 else
 shell:
 	$(info $(BOLD)Connecting to running $(TOOLCHAIN_NAME)...$(NORM))
